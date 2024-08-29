@@ -1,113 +1,194 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Slider } from "@/components/ui/slider"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {  Home as HomeIcon,Search, Library, ChevronLeft, ChevronRight, Play, SkipBack, SkipForward, Repeat, Shuffle, Volume2, Heart, Clock, Plus } from "lucide-react"
+import { Player } from "@/components/Player"
+
+const albumImage = "https://i.pinimg.com/474x/22/f8/2b/22f82b664e622cbb98df16ad4afe6374.jpg"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="h-screen flex">
+      <aside className="w-64 bg-muted/50 p-5 hidden md:block">
+        <nav className="space-y-5">
+          <Button variant="ghost" className="w-full justify-start text-lg">
+            <HomeIcon className="mr-3 h-5 w-5" />
+            主页
+          </Button>
+          <Button variant="ghost" className="w-full justify-start text-lg">
+            <Search className="mr-3 h-5 w-5" />
+            搜索
+          </Button>
+          <Button variant="ghost" className="w-full justify-start text-lg">
+            <Library className="mr-3 h-5 w-5" />
+            你的音乐库
+          </Button>
+        </nav>
+        <div className="mt-6 pt-6 border-t">
+          <h2 className="font-semibold mb-3 text-lg">播放列表</h2>
+          <ul className="space-y-3">
+            <li>
+              <Button variant="ghost" className="w-full justify-start">我的播放列表 #1</Button>
+            </li>
+            <li>
+              <Button variant="ghost" className="w-full justify-start">收藏夹</Button>
+            </li>
+            <li>
+              <Button variant="ghost" className="w-full justify-start">摇滚经典</Button>
+            </li>
+            <li>
+              <Button variant="ghost" className="w-full justify-start">轻松氛围</Button>
+            </li>
+            <li>
+              <Button variant="ghost" className="w-full justify-start">健身音乐</Button>
+            </li>
+          </ul>
         </div>
-      </div>
+      </aside>
+      <main className="flex-1 flex flex-col">
+        <div className="flex-1 overflow-auto">
+          <ScrollArea className="h-full">
+            <div className="p-8">
+              <Tabs defaultValue="featured" className="mb-8">
+                <TabsList className="mb-6">
+                  <TabsTrigger value="featured" className="text-l">精选</TabsTrigger>
+                  <TabsTrigger value="genres" className="text-l">流派</TabsTrigger>
+                  <TabsTrigger value="new" className="text-l">新发行</TabsTrigger>
+                  <TabsTrigger value="charts" className="text-l">排行榜</TabsTrigger>
+                </TabsList>
+                <TabsContent value="featured">
+                  <h2 className="text-3xl font-bold mb-6">精选专辑</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {[...Array(10)].map((_, i) => (
+                      <div key={i} className="space-y-3">
+                        <div className="aspect-square bg-muted rounded-lg overflow-hidden shadow-md">
+                          <img
+                            src={albumImage}
+                            alt={`专辑 ${i + 1}`}
+                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                          />
+                        </div>
+                        <h3 className="font-medium text-lg">精选专辑 {i + 1}</h3>
+                        <p className="text-sm text-muted-foreground">艺术家名称</p>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="genres">
+                  <h2 className="text-3xl font-bold mb-6">音乐流派</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {['摇滚', '流行', '嘻哈', '电子', '古典', '爵士', 'R&B', '乡村', '独立', '金属'].map((genre, i) => (
+                      <div key={i} className="space-y-3">
+                        <div className="aspect-square bg-muted rounded-lg overflow-hidden flex items-center justify-center shadow-md">
+                          <span className="text-2xl font-bold">{genre}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="new">
+                  <h2 className="text-3xl font-bold mb-6">新发行</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {[...Array(10)].map((_, i) => (
+                      <div key={i} className="space-y-3">
+                        <div className="aspect-square bg-muted rounded-lg overflow-hidden shadow-md">
+                          <img
+                            src={albumImage}
+                            alt={`新专辑 ${i + 1}`}
+                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                          />
+                        </div>
+                        <h3 className="font-medium text-lg">新发行 {i + 1}</h3>
+                        <p className="text-sm text-muted-foreground">艺术家名称</p>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="charts">
+                  <h2 className="text-3xl font-bold mb-6">热门排行榜</h2>
+                  <div className="space-y-6">
+                    {['全球热门', '国内热门', '新歌榜', '飙升榜'].map((chart, i) => (
+                      <div key={i} className="bg-muted rounded-lg p-6 shadow-md">
+                        <h3 className="text-xl font-semibold mb-4">{chart}</h3>
+                        <ul className="space-y-4">
+                          {[...Array(5)].map((_, j) => (
+                            <li key={j} className="flex items-center justify-between">
+                              <div className="flex items-center">
+                                <span className="mr-6 font-bold text-lg">{j + 1}</span>
+                                <img src={albumImage} alt={`歌曲 ${j + 1}`} className="w-16 h-16 rounded-lg mr-6 shadow-md" />
+                                <div>
+                                  <p className="font-medium text-lg">热门歌曲 {j + 1}</p>
+                                  <p className="text-sm text-muted-foreground">艺术家名称</p>
+                                </div>
+                              </div>
+                              <Button variant="ghost" size="icon">
+                                <Heart className="h-5 w-5" />
+                              </Button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+              
+              <h2 className="text-3xl font-bold mb-6 mt-10">最近播放</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="space-y-3">
+                    <div className="aspect-square bg-muted rounded-lg overflow-hidden shadow-md">
+                      <img
+                        src={albumImage}
+                        alt={`最近专辑 ${i + 1}`}
+                        className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+                    <h3 className="font-medium text-lg">最近专辑 {i + 1}</h3>
+                    <p className="text-sm text-muted-foreground">艺术家名称</p>
+                  </div>
+                ))}
+              </div>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+              <h2 className="text-3xl font-bold mb-6 mt-10">为你推荐</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="space-y-3">
+                    <div className="aspect-square bg-muted rounded-lg overflow-hidden shadow-md">
+                      <img
+                        src={albumImage}
+                        alt={`推荐专辑 ${i + 1}`}
+                        className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+                    <h3 className="font-medium text-lg">你的歌单 {i + 1}</h3>
+                    <p className="text-sm text-muted-foreground">根据你的收听习惯</p>
+                  </div>
+                ))}
+              </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+              <h2 className="text-3xl font-bold mb-6 mt-10">热门播客</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="space-y-3">
+                    <div className="aspect-square bg-muted rounded-lg overflow-hidden shadow-md">
+                      <img
+                        src={albumImage}
+                        alt={`播客 ${i + 1}`}
+                        className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+                    <h3 className="font-medium text-lg">热门播客 {i + 1}</h3>
+                    <p className="text-sm text-muted-foreground">主持人名称</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollArea>
+        </div>
+        <Player />
+      </main>
+    </div>
+  )
 }
