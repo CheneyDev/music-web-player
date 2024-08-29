@@ -1,30 +1,12 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sidebar } from "@/components/Sidebar"
+import { AlbumGrid } from "@/components/AlbumGrid"
 import { GenreGrid } from "@/components/GenreGrid"
 import { ChartList } from "@/components/ChartList"
 import { Player } from "@/components/Player"
-import { getTopTracks, getTopAlbums } from "@/lib/api"
-import { TrackGrid } from "@/components/TrackGrid"
-import { AlbumGrid } from "@/components/AlbumGrid"
 
 export default function Home() {
-  const [topTracks, setTopTracks] = useState([]);
-  const [topAlbums, setTopAlbums] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const tracks = await getTopTracks();
-      const albums = await getTopAlbums();
-      setTopTracks(tracks);
-      setTopAlbums(albums);
-    }
-    fetchData();
-  }, []);
-
   return (
     <div className="h-screen flex">
       <Sidebar />
@@ -42,7 +24,9 @@ export default function Home() {
                 <TabsContent value="featured">
                   <AlbumGrid 
                     title="精选专辑" 
-                    albums={topAlbums || []}
+                    count={10} 
+                    itemTitle={(i) => `精选专辑 ${i}`} 
+                    subtitle="艺术家名称" 
                   />
                 </TabsContent>
                 <TabsContent value="genres">
@@ -51,31 +35,35 @@ export default function Home() {
                 <TabsContent value="new">
                   <AlbumGrid 
                     title="新发行" 
-                    albums={(topAlbums || []).slice(0, 5)}
+                    count={10} 
+                    itemTitle={(i) => `新发行 ${i}`} 
+                    subtitle="艺术家名称" 
                   />
                 </TabsContent>
                 <TabsContent value="charts">
-                  <ChartList tracks={topTracks} />
+                  <ChartList />
                 </TabsContent>
               </Tabs>
               
-              <TrackGrid 
-                title="全球热播" 
-                tracks={topTracks} 
+              <AlbumGrid 
+                title="最近播放" 
+                count={6} 
+                itemTitle={(i) => `最近专辑 ${i}`} 
+                subtitle="艺术家名称" 
               />
 
               <AlbumGrid 
-                title="热门专辑" 
-                albums={topAlbums || []}
+                title="为你推荐" 
+                count={6} 
+                itemTitle={(i) => `你的歌单 ${i}`} 
+                subtitle="根据你的收听习惯" 
               />
 
               <AlbumGrid 
                 title="热门播客" 
-                albums={Array(6).fill({}).map((_, i) => ({
-                  name: `热门播客 ${i + 1}`,
-                  artist: { name: "主持人名称" },
-                  image: { large: 'https://via.placeholder.com/300' }
-                }))}
+                count={6} 
+                itemTitle={(i) => `热门播客 ${i}`} 
+                subtitle="主持人名称" 
               />
             </div>
           </ScrollArea>
